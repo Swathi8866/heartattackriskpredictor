@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Heart Attack Risk Prediction</title>
+        <style>
+            body, h2, label {
+            margin: 0;
+            padding: 0;
+            }
+
+            /* Apply some basic styling to the container */
+            .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #78eb9e;
+            background-image: linear-gradient(rgb(236, 250, 35),rgb(60, 243, 173));
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Style the header */ 
+            h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #302e2e;
+            text-align:center;
+            }
+
+            /* Style form labels and inputs */
+            label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #131212;
+            }
+
+            input[type="number"],
+            input[type="radio"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: inline;
+            }
+
+            /* Style radio buttons and checkboxes */
+            input[type="radio"] {
+            margin-right: 5px;
+            margin-bottom: 10px;
+            display: inline;
+            }
+            /* Style the predict button */
+            button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #eff2f5;
+            color: #100f0f;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline;
+            }
+
+            button:hover {
+            background-color: #0d58e3;
+            }
+
+            /* Style the result paragraph */
+            #result {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+            }
+
+        </style>
+    </head>
+    
+<body>
+ <div class="container">
+        <h2>Heart Attack Risk Prediction</h2>
+        <label for="age">Age (years):</label>
+        <input type="number" id="age" min="0" oninput="this.value=Math.abs(this.value)" required>
+        <div  class="input-container">
+            <div>
+                <label>Gender</label>
+            </div>
+            <div style="margin-top: 10px;"class="child1-container">
+                <div style="display: inline-flex; margin-right: 50px;">
+                    <input id="gender-male" type="radio" name = "Gender" value="yes">
+                    <label for="gender-male">Male</label>
+                </div>
+                <div style="display: inline-flex;">
+                    <input id="gender-female" type="radio" name = "Gender" value="No">
+                    <label for="gender-female">Female</label>
+                </div>
+            </div>
+        </div>    
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" min="0" max="200" oninput="this.value=Math.abs(this.value)" required>
+
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" min="0" oninput="this.value=Math.abs(this.value)" required>
+
+        <label for="bp">Blood Pressure (mm Hg):</label>
+        <input type="number" id="bp" min="0" oninput="this.value=Math.abs(this.value)" required>
+ 
+       
+        <div  class="input-container">
+            <div>
+                <label>Cholesterol</label>
+            </div>
+            <div style="margin-top: 10px;"class="child2-container">
+                <div style="display: inline-flex; margin-right: 50px;">
+                    <input id="cholesterol-yes" type="radio" name = "Cholesterol" value="yes">
+                    <label for="cholesterol-yes">Yes</label>
+                </div>
+                <div style="display: inline-flex;">
+                    <input id="Cholesterol-no" type="radio" name = "Cholesterol" value="No">
+                    <label for="Cholesterol-no">No</label>
+                </div>
+            </div>
+        </div>
+        <!-- Do you smoke container-->
+        <div  class="input2-container">
+            <div>
+                <label>Do you smoke?</label>
+            </div>
+            <div style="margin-top: 10px; "class="child3-container">
+                <div style="display: inline-flex; margin-right: 50px; margin-top: 10px">
+                    <input id="smoke-yes" type="radio" name = "smoke" value="yes">
+                    <label for="smoke-yes">Yes</label>
+                </div>
+                <div style="display: inline-flex;">
+                    <input id="smoke-no" type="radio" name = "smoke" value="No">
+                    <label for="smoke-no">No</label>
+                </div>
+            </div>
+        </div>
+        <!--Do you consume container-->
+        <div  class="input2-container">
+            <div>
+                <label>Do you consume alcohol?</label>
+            </div>
+            <div style="margin-top: 10px;"class="child3-container">
+                <div style="display: inline-flex; margin-right: 50px; margin-top: 10px;">
+                    <input id="alcohol-yes" type="radio" name = "alcohol" value="yes">
+                    <label for="alcohol-yes">Yes</label>
+                </div>
+                <div style="display: inline-flex;">
+                    <input id="alcohol-no" type="radio" name = "alcohol" value="No">
+                    <label for="alcohol-no">No</label>
+                </div>
+            </div>
+        </div>
+    <div id="container" style="margin-top: 20px;">
+        <button onclick="predict()">Predict</button>
+        </div>
+        
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function predict() {
+            const age = parseFloat(document.getElementById("age").value);
+            const gender = document.querySelector('input[name="Gender"]:checked').value;
+            const height = parseFloat(document.getElementById("height").value);
+            const weight = parseFloat(document.getElementById("weight").value);
+            const cholesterol = document.querySelector('input[name="Cholesterol"]:checked').value;
+            const bloodPressure = parseFloat(document.getElementById("bp").value);
+            const smoker = document.querySelector('input[name="smoke"]:checked').value;
+            const alcoholic = document.querySelector('input[name="alcohol"]:checked').value;
+    
+            // Perform a simple, arbitrary prediction (for demonstration purposes only)
+            let prediction = "Low Risk";
+            if (age > 60 || (gender === "yes" && weight > 100) || (gender === "No" && weight > 80) || 
+                bloodPressure > 140 || cholesterol === "yes" || smoker === "yes" || alcoholic === "yes") {
+                prediction = "High Risk";
+            }
+    
+            document.getElementById("result").innerText = `Predicted Risk: ${prediction}`;
+        }
+    </script>
+    
+</body>
+</html>
